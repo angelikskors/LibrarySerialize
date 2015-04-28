@@ -26,35 +26,48 @@ public class Library {
 		BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
 		System.out.println("������� ��� ������ ");
-		String author = sc.readLine();
-		if (author.matches("[a-zA-Z]+$") | author.matches("[�-��-�]+$")) {
+		String line ;
+		while ((line = sc.readLine())!= null){
+			if(line.equals("��")){
+				read(filename);
+			}else {
+				String author = line;
 
-			System.out.println("������� �������� ������������");
-			String name = sc.readLine();
-			if (name.matches("[a-zA-Z]+$") | name.matches("[�-��-�]+$")) {
-				Scanner newCs = new Scanner(System.in);
-				System.out.println("������� ��� ������� ");
+				if (author.matches("[a-zA-Z]+$") | author.matches("[�-��-�]+$")) {
 
-				if (newCs.hasNextInt()) {
-					String year1 = newCs.nextLine();
-					int year = Integer.parseInt(year1);
-					LibraryList first = new LibraryList(name, author, year);
+					System.out.println("������� �������� ������������");
+					String name = sc.readLine();
+					if (name.matches("[a-zA-Z]+$") | name.matches("[�-��-�]+$")) {
+						Scanner newCs = new Scanner(System.in);
+						System.out.println("������� ��� ������� ");
 
-					list.add(first);
+						if (newCs.hasNextInt()) {
+							String year1 = newCs.nextLine();
+							int year = Integer.parseInt(year1);
+							LibraryList first = new LibraryList(name, author, year);
+
+							list.add(first);
+						}
+					}
+				}else {
+					System.out.println("wrong input");
+					break;
 				}
 			}
-		} else {
-			System.out.println("wrong input");
 		}
+
 		write(filename, list);
-		additionalOption();
+
+		read(filename);
+
+		System.out.println("Thanks for input");
 
 	}
 
 	public static void write(String filename, ArrayList<LibraryList> list){
 		ObjectOutputStream out = null;
 		try {
-			FileOutputStream fos = new FileOutputStream(filename, true);
+			FileOutputStream fos = new FileOutputStream(filename, false);
 			out = new ObjectOutputStream(fos);
 
 			out.writeObject(list);
@@ -68,6 +81,27 @@ public class Library {
 					e.printStackTrace();
 				}
 			}
+		}
+	}
+
+	public static void read(String filename){
+		ObjectInputStream in = null;
+		try {
+			in = new ObjectInputStream(new BufferedInputStream(
+					new FileInputStream(filename)));
+			ArrayList<LibraryList> list = (ArrayList) in.readObject();
+			print("����� �� �����", list);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			if (in != null)
+				try {
+					in.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 		}
 	}
 
