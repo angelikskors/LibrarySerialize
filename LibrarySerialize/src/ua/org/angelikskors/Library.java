@@ -18,62 +18,70 @@ import java.util.Scanner;
 
 public class Library {
 	public static void main(String[] args) throws IOException {
-		ArrayList<LibraryList> list;
+		ArrayList<LibraryList> list = new ArrayList<LibraryList>();
 		String filename = "LibraryData.ser";
 		if (args.length > 0) {
 			filename = args[0];
 		}
 		BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
-		System.out.println("Введите имя автора ");
+		System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ");
 		String author = sc.readLine();
-		if (author.matches("[a-zA-Z]+$") | author.matches("[а-яА-Я]+$")) {
+		if (author.matches("[a-zA-Z]+$") | author.matches("[пїЅ-пїЅпїЅ-пїЅ]+$")) {
 
-			System.out.println("Введите название произведения");
+			System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 			String name = sc.readLine();
-			if (name.matches("[a-zA-Z]+$") | name.matches("[а-яА-Я]+$")) {
+			if (name.matches("[a-zA-Z]+$") | name.matches("[пїЅ-пїЅпїЅ-пїЅ]+$")) {
 				Scanner newCs = new Scanner(System.in);
-				System.out.println("Введите год выпуска ");
+				System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
 
 				if (newCs.hasNextInt()) {
 					String year1 = newCs.nextLine();
 					int year = Integer.parseInt(year1);
-					list = new ArrayList<>();
 					LibraryList first = new LibraryList(name, author, year);
 
 					list.add(first);
-
-					FileOutputStream fos = null;
-					ObjectOutputStream out = null;
-					try {
-						fos = new FileOutputStream(filename, true);
-						out = new ObjectOutputStream(fos);
-
-						out.writeObject(list);
-						out.close();
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					}
 				}
 			}
 		} else {
 			System.out.println("wrong input");
 		}
+		write(filename, list);
 		additionalOption();
 
+	}
+
+	public static void write(String filename, ArrayList<LibraryList> list){
+		ObjectOutputStream out = null;
+		try {
+			FileOutputStream fos = new FileOutputStream(filename, true);
+			out = new ObjectOutputStream(fos);
+
+			out.writeObject(list);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}finally {
+			if(out!= null){
+				try {
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public static void additionalOption() throws IOException {
 		BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 		ArrayList<LibraryList> list;
-		System.out.println("Вывести все данные? ");
-		if (sc.readLine().equals("да")) {
+		System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ? ");
+		if (sc.readLine().equals("пїЅпїЅ")) {
 			ObjectInputStream in = null;
 			try {
 				in = new ObjectInputStream(new BufferedInputStream(
 						new FileInputStream("LibraryData.ser")));
 				list = (ArrayList) in.readObject();
-				print("Взято из файла", list);
+				print("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ", list);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			} catch (Exception ex) {
