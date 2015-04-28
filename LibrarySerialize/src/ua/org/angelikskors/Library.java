@@ -29,7 +29,7 @@ public class Library {
 		String line ;
 		while ((line = sc.readLine())!= null){
 			if(line.equals("��")){
-				read(filename);
+				break;
 			}else {
 				String author = line;
 
